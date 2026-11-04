@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>중3 영어 문법 Master - 종속접속사 (시간 & 이유/조건)</title>
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --primary-dark: #357ABD;
+            --secondary-color: #50E3C2;
+            --background-color: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text-color: #333333;
+            --text-muted: #666666;
+            --correct-color: #2ECC71;
+            --incorrect-color: #E74C3C;
+            --border-radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        nav {
+            display: flex;
+            background-color: #EAEFF5;
+            border-bottom: 1px solid #DDD;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            background: none;
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.active {
+            color: var(--primary-color);
+            background-color: var(--card-bg);
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        main {
+            padding: 24px;
+            min-height: 420px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* 개념 학습 스타일 */
+        .grammar-card {
+            border: 1px solid #E1E8ED;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            background-color: #FAFBFD;
+            transition: transform 0.2s ease;
+        }
+
+        .grammar-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary-color);
+        }
+
+        .grammar-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .grammar-card .badge {
+            background-color: #E1F0FF;
+            color: var(--primary-dark);
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .grammar-card p {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .grammar-card .example {
+            background-color: #FFF;
+            padding: 10px;
+            border-left: 4px solid var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .grammar-card .example .en {
+            font-weight: 600;
+            color: #2C3E50;
+        }
+
+        .grammar-card .example .ko {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 2px;
+        }
+
+        .tip-box {
+            background-color: #FFF8E7;
+            border: 1px solid #FFE0B2;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #8C6D1F;
+        }
+
+        /* 퀴즈 스타일 */
+        .quiz-progress {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .quiz-question {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            padding: 14px 18px;
+            border: 2px solid #E1E8ED;
+            border-radius: 8px;
+            background-color: white;
+            text-align: left;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background-color: #F0F7FF;
+            border-color: var(--primary-color);
+        }
+
+        .option-btn.correct {
+            background-color: #E8F8F0;
+            border-color: var(--correct-color);
+            color: var(--correct-color);
+            font-weight: bold;
+        }
+
+        .option-btn.incorrect {
+            background-color: #FDE8E8;
+            border-color: var(--incorrect-color);
+            color: var(--incorrect-color);
+        }
+
+        .quiz-feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            display: none;
+        }
+
+        .quiz-feedback.correct {
+            display: block;
+            background-color: #E8F8F0;
+            color: #27AE60;
+        }
+
+        .quiz-feedback.incorrect {
+            display: block;
+            background-color: #FDE8E8;
+            color: #C0392B;
+        }
+
+        .quiz-controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn:disabled {
+            background-color: #CCC;
+            cursor: not-allowed;
+        }
+
+        /* 결과 화면 */
+        .result-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .result-screen h2 {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+            color: var(--primary-color);
+        }
+
+        .score-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #2C3E50;
+        }
+
+        footer {
+            text-align: center;
+            padding: 16px;
+            background-color: #FAFBFD;
+            border-top: 1px solid #E1E8ED;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header>
+        <h1>중3 영어 핵심 문법 Master</h1>
+        <p>Lesson: 종속접속사 (시간 · 이유 · 양보 · 조건)</p>
+    </header>
+
+    <nav>
+        <button class="nav-btn active" onclick="switchTab('concept')">1. 개념 학습</button>
+        <button class="nav-btn" onclick="switchTab('quiz')">2. 퀴즈 풀기</button>
+    </nav>
+
+    <main>
+        <!-- 개념 학습 Section -->
+        <section id="concept" class="section active">
+            <div class="grammar-card">
+                <h3>Until <span class="badge">시간</span></h3>
+                <p><strong>의미:</strong> ~할 때까지 (동작이나 상태의 지속)</p>
+                <div class="example">
+                    <div class="en">Wait here <strong>until</strong> I come back.</div>
+                    <div class="ko">내가 돌아올 때까지 여기서 기다려.</div>
+                </div>
+            </div>
+
+            <div class="grammar-card">
+                <h3>When <span class="badge">시간</span></h3>
+                <p><strong>의미:</strong> ~할 때, ~했을 때</p>
+                <div class="example">
+                    <div class="en"><strong>When</strong> I arrived home, it started to rain.</div>
+                    <div class="ko">내가 집에 도착했을 때, 비가 내리기 시작했다.</div>
+                </div>
+            </div>
+
+            <div class="grammar-card">
+                <h3>While <span class="badge">시간</span></h3>
+                <p><strong>의미:</strong> ~하는 동안 (진행 중인 동작)</p>
+                <div class="example">
+                    <div class="en">She listened to music <strong>while</strong> she was studying.</div>
+                    <div class="ko">그녀는 공부하는 동안 음악을 들었다.</div>
+                </div>
+            </div>
+
+            <div class="grammar-card">
+                <h3>Since <span class="badge">시간 / 이유</span></h3>
+                <p><strong>의미:</strong> ~한 이후로 (시간) / ~이므로, ~때문에 (이유)</p>
+                <div class="example">
+                    <div class="en">I have lived here <strong>since</strong> I was five. (시간)</div>
+                    <div class="ko">나는 5살 이후로 여기서 살아왔다.</div>
+                </div>
+                <div class="example" style="margin-top: 6px;">
+                    <div class="en"><strong>Since</strong> it is cold outside, put on your coat. (이유)</div>
+                    <div class="ko">밖이 추우므로, 코트를 입어라.</div>
+                </div>
+            </div>
+
+            <div class="grammar-card">
+                <h3>Although <span class="badge">양보</span></h3>
+                <p><strong>의미:</strong> 비록 ~일지라도, ~에도 불구하고</p>
+                <div class="example">
+                    <div class="en"><strong>Although</strong> it was raining, they played soccer.</div>
+                    <div class="ko">비록 비가 오고 있었지만, 그들은 축구를 했다.</div>
+                </div>
+            </div>
+
+            <div class="grammar-card">
+                <h3>If <span class="badge">조건</span></h3>
+                <p><strong>의미:</strong> 만약 ~라면</p>
+                <div class="example">
+                    <div class="en"><strong>If</strong> you study hard, you will pass the exam.</div>
+                    <div class="ko">만약 네가 열심히 공부한다면, 시험에 합격할 것이다.</div>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                💡 <strong>중3 시험 핵심 포인트!</strong><br>
+                시간이나 조건을 나타내는 종속절(when, until, while, if 등)에서는 <strong>현재시제가 미래시제를 대신</strong>합니다. (미래의 일이라도 will을 쓰지 않음!)
+            </div>
+        </section>
+
+        <!-- 퀴즈 Section -->
+        <section id="quiz" class="section">
+            <div id="quiz-container">
+                <div class="quiz-progress" id="quiz-progress">문제 1 / 6</div>
+                <div class="quiz-question" id="quiz-question"></div>
+                <div class="options-container" id="options-container"></div>
+                <div class="quiz-feedback" id="quiz-feedback"></div>
+                <div class="quiz-controls">
+                    <button class="btn" id="next-btn" onclick="nextQuestion()" disabled>다음 문제</button>
+                </div>
+            </div>
+
+            <div id="result-container" class="result-screen" style="display: none;">
+                <h2>학습 완료! 🎉</h2>
+                <p>수고하셨습니다. 종속접속사 문제를 모두 풀었습니다.</p>
+                <div class="score-display" id="score-display">0 / 6</div>
+                <button class="btn" onclick="restartQuiz()">다시 풀기</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 중학교 3학년 영어 문법 학습 앱 - 종속접속사 편
+    </footer>
+</div>
+
+<script>
+    const quizData = [
+        {
+            question: "다음 빈칸에 들어갈 가장 적절한 접속사를 고르세요.<br><br>\"Please wait here _______ I return.\"",
+            options: ["until", "although", "if", "since"],
+            answer: 0,
+            explanation: "'내가 돌아올 때까지'라는 시간의 지속을 나타내므로 'until'이 적절합니다."
+        },
+        {
+            question: "다음 문장의 빈칸에 들어갈 접속사는?<br><br>\"I was watching TV _______ my mom was cooking dinner.\"",
+            options: ["if", "while", "until", "although"],
+            answer: 1,
+            explanation: "두 동시 동작('엄마가 요리하는 동안')을 연결하므로 'while'이 적절합니다."
+        },
+        {
+            question: "다음 빈칸에 들어갈 접속사의 의미가 <u>이유(~이므로)</u>로 쓰인 것은?<br><br>\"_______ you are tired, you should take a rest.\"",
+            options: ["Until", "While", "Since", "If"],
+            answer: 2,
+            explanation: "'Since'는 '~한 이후로'라는 시간의 뜻 외에도 '~이므로, ~때문에'라는 이유를 나타냅니다."
+        },
+        {
+            question: "다음 빈칸에 가장 알맞은 단어를 고르세요.<br><br>\"_______ he worked hard, he couldn't finish the project on time.\"",
+            options: ["If", "When", "Although", "Until"],
+            answer: 2,
+            explanation: "'비록 열심히 일했을지라도'라는 양보의 의미를 나타내는 'Although'가 적절합니다."
+        },
+        {
+            question: "다음 문장의 빈칸에 들어갈 알맞은 접속사를 고르세요.<br><br>\"_______ it rains tomorrow, we will stay at home.\"",
+            options: ["If", "While", "Since", "Until"],
+            answer: 0,
+            explanation: "'만약 내일 비가 온다면'이라는 조건을 나타내므로 'If'가 적절합니다."
+        },
+        {
+            question: "문맥상 빈칸에 가장 자연스러운 접속사를 고르세요.<br><br>\"I felt very happy _______ I received your letter.\"",
+            options: ["although", "when", "until", "if"],
+            answer: 1,
+            explanation: "'네 편지를 받았을 때'라는 특정 시점을 나타내므로 'when'이 적절합니다."
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let selectedOption = null;
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+
+        if (tabId === 'concept') {
+            document.querySelectorAll('.nav-btn')[0].classList.add('active');
+            document.getElementById('concept').classList.add('active');
+        } else {
+            document.querySelectorAll('.nav-btn')[1].classList.add('active');
+            document.getElementById('quiz').classList.add('active');
+            if (currentQuestionIndex === 0 && selectedOption === null) {
+                loadQuestion();
+            }
+        }
+    }
+
+    function loadQuestion() {
+        const currentQuiz = quizData[currentQuestionIndex];
+        document.getElementById('quiz-progress').innerText = `문제 ${currentQuestionIndex + 1} / ${quizData.length}`;
+        document.getElementById('quiz-question').innerHTML = currentQuiz.question;
+        
+        const optionsContainer = document.getElementById('options-container');
+        optionsContainer.innerHTML = '';
+
+        const feedbackEl = document.getElementById('quiz-feedback');
+        feedbackEl.className = 'quiz-feedback';
+        feedbackEl.style.display = 'none';
+
+        document.getElementById('next-btn').disabled = true;
+        selectedOption = null;
+
+        currentQuiz.options.forEach((option, index) => {
+            const button = document.createElement('button');
+            button.className = 'option-btn';
+            button.innerText = `${index + 1}. ${option}`;
+            button.onclick = () => selectOption(index);
+            optionsContainer.appendChild(button);
+        });
+    }
+
+    function selectOption(index) {
+        if (selectedOption !== null) return; // 이미 선택한 경우 방지
+
+        selectedOption = index;
+        const currentQuiz = quizData[currentQuestionIndex];
+        const options = document.querySelectorAll('.option-btn');
+        const feedbackEl = document.getElementById('quiz-feedback');
+
+        options.forEach(btn => btn.disabled = true);
+
+        if (index === currentQuiz.answer) {
+            options[index].classList.add('correct');
+            feedbackEl.innerText = `정답입니다! 👏 ${currentQuiz.explanation}`;
+            feedbackEl.className = 'quiz-feedback correct';
+            score++;
+        } else {
+            options[index].classList.add('incorrect');
+            options[currentQuiz.answer].classList.add('correct');
+            feedbackEl.innerText = `오답입니다. 😅 ${currentQuiz.explanation}`;
+            feedbackEl.className = 'quiz-feedback incorrect';
+        }
+
+        document.getElementById('next-btn').disabled = false;
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < quizData.length) {
+            loadQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-container').style.display = 'none';
+        const resultContainer = document.getElementById('result-container');
+        resultContainer.style.display = 'block';
+        document.getElementById('score-display').innerText = `${score} / ${quizData.length}`;
+    }
+
+    function restartQuiz() {
+        currentQuestionIndex = 0;
+        score = 0;
+        selectedOption = null;
+        document.getElementById('result-container').style.display = 'none';
+        document.getElementById('quiz-container').style.display = 'block';
+        loadQuestion();
+    }
+</script>
+
+</body>
+</html>
